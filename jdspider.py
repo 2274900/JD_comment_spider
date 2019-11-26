@@ -7,8 +7,8 @@ from urllib.parse import urlencode
 import time
 
 class JDSpider:
-
-    def __init__(self,categlory):
+# 爬虫实现类：传入商品类别（如手机、电脑），构造实例。然后调用getData爬取数据。
+    def __init__(self,categlory):  
         self.startUrl = "https://search.jd.com/Search?keyword=%s&enc=utf-8"%(quote(categlory))
         self.commentBaseUrl = "https://sclub.jd.com/comment/productPageComments.action?"
         self.headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"}
@@ -53,8 +53,10 @@ class JDSpider:
         return html.xpath('//li[@class="gl-item"]/@data-sku')
 
 
-    def getData(self,maxPage,score,):  #maxPage是爬取的最大页数，每页10条数据没有改动。但是页码会改变，并且差评和好评的页码不相同，一般情况下：好评>>差评>中评
-
+    def getData(self,maxPage,score,):  #maxPage是爬取评论的最大页数，每页10条数据。差评和好评的最大一般页码不相同，一般情况下：好评>>差评>中评
+                                        #maxPage遇到超出的页码会自动跳出，所以设大点也没有关系。
+                                         #score是指那种评价类型，好评3、中评2、差评1。
+        
         comments = []
         scores = []
 
@@ -100,9 +102,6 @@ class JDSpider:
 
 
 if __name__ =="__main__":
-    # sjspider = JDSpider("")
-    # sjspider.getData(700, 3)
-    # sjspider.getData(30, 2)
     list = ['电脑','洗面奶','衣服']
     for item in list:
         spider = JDSpider(item)
