@@ -74,11 +74,10 @@ class JDSpider:
                 if response.status_code !=200:
                     logging.warning("状态码错误，爬虫连接异常")
                     continue
-                time.sleep(2)
+                time.sleep(2)    #设置时延
                 if response.text=='':
                     logging.warning("未爬取到信息")
                     continue
-                print(response.text)
                 try:
                     res_json = json.loads(response.text)
                 except Exception as e:
