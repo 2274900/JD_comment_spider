@@ -20,7 +20,7 @@ class JDSpider:
                     'https':[]
         }
     def getParamUrl(self,productid,page,score):
-        params = {
+        params = {                    #用于控制页数，页面信息数的数据，非常重要，必不可少，要不然会被JD识别出来，爬不出相应的数据。
             "productId": "%s"%(productid),
             "score": "%s"%(score),               #1表示差评，2表示中评，3表示好评
             "sortType": "5",
@@ -97,7 +97,7 @@ class JDSpider:
         with open(savepath,'a+',encoding ='utf8') as f:
             for i in range(len(comments)):
                 f.write("%d\t%s\t%s\n"%(i,scores[i],comments[i]))
-        logging.warning("数据已保存在%s"%(savepath))
+        logging.warning("数据已保存在 %s"%(savepath))
 
 
 
