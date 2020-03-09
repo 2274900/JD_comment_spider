@@ -9,7 +9,7 @@ import time
 class JDSpider:
 # 爬虫实现类：传入商品类别（如手机、电脑），构造实例。然后调用getData爬取数据。
     def __init__(self,categlory):  
-        self.startUrl = "https://search.jd.com/Search?keyword=%s&enc=utf-8"%(quote(categlory))
+        self.startUrl = "https://search.jd.com/Search?keyword=%s&enc=utf-8"%(quote(categlory))     #jD起始搜索页面
         self.commentBaseUrl = "https://sclub.jd.com/comment/productPageComments.action?"
         self.headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"}
         self.productsId = self.getId()
@@ -33,19 +33,14 @@ class JDSpider:
         url = self.commentBaseUrl+urlencode(params)
         return params,url
 
-    # def getpid(self):         #被prepare代替
-    #     response = requests.get(self.startUrl,headers = self.headers)
-    #     html = etree.HTML(response.text.decode("utf-8",errors ='ignore'))
-    #     goodsId = html.xpath('//li[@class="gl-item"]/@data-pid')
-    #     return goodsId
 
-    def getHeaders(self,productid):
+    def getHeaders(self,productid):             #和初始的self.header不同，这是爬取某个商品的header，加入了商品id，我也不知道去掉了会怎样。
         header = {"Referer": "https://item.jd.com/%s.html"%(productid),
                     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
                   }
         return header
 
-    def getId(self):
+    def getId(self):    #获取商品id，为了得到具体商品页面的网址。结果保存在self.productId的数组里
         response = requests.get(self.startUrl, headers = self.headers)
         if response.status_code != 200:
             logging.warning("状态码错误，爬虫连接异常！")
